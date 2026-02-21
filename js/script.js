@@ -1,4 +1,4 @@
-const apiKey = "bd86bc54444e3271f386dc4a1637ed4e";
+const apiKey = "SUA_API_KEY_AQUI";
 let config = { lang: 'pt', unit: 'metric' };
 let marker;
 
