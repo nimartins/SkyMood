@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyMood</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link id="favicon" rel="icon" type="image/png" href="https://openweathermap.org/img/wn/10d.png">
+</head>
+<body>
+    <div class="glass-bg"></div>
+    <div class="main-layout">
+        <aside class="side-panel left">
+            <h3 data-i18n="recent_title">Recentes</h3>
+            <div id="recent" class="list-container"></div>
+            <div id="map"></div>
+        </aside>
+
+        <main class="app-container">
+            <header>
+                <h1 class="logo">SkyMood</h1>
+                <div class="header-btns">
+                    <button id="myLocationBtn" class="btn-text">MINHA LOCALIZAÇÃO</button>
+                    <button id="configBtn" class="btn-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    </button>
+                </div>
+            </header>
+
+            <section class="controls">
+                <select id="countrySelect"><option value="">PAÍS</option></select>
+                <select id="stateSelect" disabled><option>UF</option></select>
+                <select id="citySelect" disabled><option>CIDADE</option></select>
+                <button id="searchBtn" class="btn-search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </section>
+
+            <div id="currentCard" class="main-display">
+                <p data-i18n="welcome_msg">AGUARDANDO SELEÇÃO</p>
+            </div>
+            <div id="forecastCards" class="forecast-row"></div>
+        </main>
+
+        <aside class="side-panel right">
+            <h3 data-i18n="capitals_title">📍 Capitais</h3>
+            <div class="list-container">
+                <button onclick="quickSearch('Paris', 'FR')">Paris</button>
+                <button onclick="quickSearch('Berlin', 'DE')">Berlin</button>
+                <button onclick="quickSearch('Madrid', 'ES')">Madrid</button>
+                <button onclick="quickSearch('Rome', 'IT')">Rome</button>
+                <button onclick="quickSearch('Amsterdam', 'NL')">Amsterdam</button>
+                <button onclick="quickSearch('Brussels', 'BE')">Brussels</button>
+                <button onclick="quickSearch('Vienna', 'AT')">Vienna</button>
+                <button onclick="quickSearch('Dublin', 'IE')">Dublin</button>
+                <button onclick="quickSearch('Copenhagen', 'DK')">Copenhagen</button>
+                <button onclick="quickSearch('Stockholm', 'SE')">Stockholm</button>
+                <button onclick="quickSearch('Oslo', 'NO')">Oslo</button>   
+            </div>
+        </aside>
+    </div>
+
+    <div id="configModal" class="modal-overlay">
+        <div class="modal-content glass">
+            <h2 data-i18n="settings_title">Configurações</h2>
+            <div class="setting-group">
+                <label data-i18n="label_lang">Idioma:</label>
+                <select id="langSetting">
+                    <option value="pt">Português</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label data-i18n="label_unit">Unidade:</label>
+                <select id="unitSetting">
+                    <option value="metric">Celsius (ºC)</option>
+                    <option value="imperial">Fahrenheit (ºF)</option>
+                </select>
+            </div>
+            <button id="saveConfig" class="btn-primary" data-i18n="btn_save">Começar</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <span class="copyright">© 2026 SKYMOOD</span>
+            <div class="divider"></div>
+            <span class="author">DESIGNED BY NICOLE MARTINS</span>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
